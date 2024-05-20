@@ -1,0 +1,13 @@
+git+https://github.com/NikeAK/tweepy-self.git
+curl-cffi==0.7.0b4
+inquirer==3.2.4
+web3==6.16.0
+loguru==0.7.2
+pyfiglet==1.0.2
+better_proxy==1.1.5
+tqdm==4.66.4
+pandas==2.2.2
+SQLAlchemy==2.0.30
+openpyxl==3.1.2
+discord.py-self==2.0.0
+eth-account

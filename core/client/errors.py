@@ -1,0 +1,3 @@
+class RequestsAttempts(Exception):
+    pass
+

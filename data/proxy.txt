@@ -1,0 +1,14 @@
+ONLY HTTP PROXY! 
+ip:port:login:password
+ip:port@login:password
+ip:port|login:password
+login:password@ip:port
+login:password:ip:port
+ip:port
+
+http://ip:port:login:password
+http://ip:port@login:password
+http://ip:port|login:password
+http://login:password@ip:port
+http://login:password:ip:port
+http://ip:port
