@@ -39,7 +39,7 @@ class TaskManager:
             
                 points_stats = await particle.check_earned_points()
 
-                #Проверка бонуса за депозит (self.check_deposit_point() - не правильно показывал при тесте)
+
                 if not any(item['type'] == 3 for item in points_stats):
                     balance_main = await particle.get_balance(self.__network.chain_id, account.address)
                     deposit_amount = round(random.uniform(DEPOSIT_USDG[0], DEPOSIT_USDG[1]), 6)
@@ -48,7 +48,14 @@ class TaskManager:
                         logger.success(f'Поток {thread} | Задание <c>DEPOSIT UNIVERSAL GAS</c> выполнено! | <i>Points: <g>+200</g> <m>$PARTI</m></i>')
                     else:
                         logger.critical(f'Поток {thread} | <r>Баланс на основном EVM кошельке закончился, транзакции будут пропущены!</r> | <r>Баланс: {balance_main} ${self.__network.token}</r>')
-                
+
+                if not any(item['type'] == 5 for item in points_stats):
+                    result = await particle.claim_retweet()
+                    if result:
+                        logger.success(f'Поток {thread} | Задание <c>RETWEET PARTICLE NETWORKS TWEET</c> выполнено! | <i>Points: <g>+1000</g> <m>$PARTI</m></i>')
+                    else:
+                        logger.error(f'Поток {thread} | Ошибка при выполнении задания <r>RETWEET PARTICLE NETWORKS TWEET</r>')
+                    
                 if not await particle.check_checkin():
                     await particle.claim_checkin()
                 
@@ -74,7 +81,7 @@ class TaskManager:
                 points_stats = await particle.check_earned_points(logl=True)
                 user_info = await particle.get_user_info()
 
-                referral_points, checkin_points, deposit_points, transactions_points = 0, 0, 0, 0
+                referral_points, checkin_points, deposit_points, transactions_points, retweet_points = 0, 0, 0, 0, 0
 
                 for item in points_stats:
                     if item['type'] == 1:
@@ -85,6 +92,8 @@ class TaskManager:
                         deposit_points = int(item['point'])
                     elif item['type'] == 4:
                         transactions_points = int(item['point'])
+                    elif item['type'] == 5:
+                        retweet_points = int(item['point'])
                 
                 all_transactions = []
                 transaction_count_today = 0
@@ -121,6 +130,7 @@ class TaskManager:
                     'checkin_points': checkin_points,
                     'deposit_points': deposit_points,
                     'transactions_points': transactions_points,
+                    'retweet_points': retweet_points,
                     'total_points': user_info['totalPoint'],
                     **balances
                 }

@@ -621,6 +621,14 @@ class ParticleNetwork:
                 break
         return txhash
 
+    async def claim_retweet(self) -> bool:
+        mac_data = self.create_common_data()
+        params = self.create_common_params(mac_data)
+
+        response = await self.session.post(self.pioneer_api+'/users/check_retweet_point', params=params, json={})
+        answer = response.json()
+        return answer['success']
+
     async def calculate_gas(self) -> tuple:
         params = {
             'chainId': self.network.chain_id,

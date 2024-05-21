@@ -31,7 +31,8 @@ class Accounts(Base):
     referral_points    : Mapped[int] = mapped_column(nullable=True)
     checkin_points     : Mapped[int] = mapped_column(nullable=True)
     deposit_points     : Mapped[int] = mapped_column(nullable=True)
-    transactions_points    : Mapped[int] = mapped_column(nullable=True)
+    transactions_points: Mapped[int] = mapped_column(nullable=True)
+    retweet_points     : Mapped[int] = mapped_column(nullable=True)
     total_points       : Mapped[int] = mapped_column(nullable=True)
 
     ethereum_main      : Mapped[float] = mapped_column(nullable=True)

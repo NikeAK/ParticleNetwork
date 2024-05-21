@@ -99,6 +99,7 @@ referral_points     - Поинтов за рефов
 checkin_points      - Поинтов за CheckIn
 deposit_points      - Понитов за депозит
 transactions_points - Понитов за транзакции
+retweet_points      - Понитов за ретвит
 total_points        - Всего поинтов
 
 ethereum_main       - Баланс Etherium  Main

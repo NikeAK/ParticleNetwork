@@ -51,4 +51,3 @@ class Checker:
             return None, str(error)
         else:
             return True, auth_token
-

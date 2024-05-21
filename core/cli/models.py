@@ -91,6 +91,7 @@ class CLInterfaceModels:
                 'checkin_points      - Поинтов за CheckIn',
                 'deposit_points      - Понитов за депозит',
                 'transactions_points - Понитов за транзакции',
+                'retweet_points      - Поинтов за ретвит',
                 'total_points        - Всего поинтов',
 
                 'ethereum_main       - Баланс Etherium Main',

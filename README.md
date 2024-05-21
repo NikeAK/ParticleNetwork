@@ -17,6 +17,7 @@
 | Выполняет Daily CHECK-IN                                       |        ✅       |
 | Выполняет DEPOSIT UNIVERSAL GAS                                |        ✅       |
 | Выполняет USE UNIVERSAL GAS TO TRANSACT (100 транзакций/24ч)   |        ✅       |
+| Выполняет RETWEET PARTICLE NETWORK'S TWEET                     |        ✅       |
 | Сбор информации об аккаунте и кошельках EVM                    |        ✅       |
 | Экспорт информации об аккаунтах в txt, excel                   |        ✅       |
 | Генерация кошельков EVM                                        |        ✅       |
