@@ -14,7 +14,6 @@ class Accounts(Base):
     private_key        : Mapped[str]
 
     twitter_token      : Mapped[str]
-    discord_token      : Mapped[str]
     proxy              : Mapped[str]
 
     device_id          : Mapped[str]

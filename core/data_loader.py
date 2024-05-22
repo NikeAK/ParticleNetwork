@@ -8,7 +8,6 @@ from core.database.models import Accounts
 
 
 class DataLoader:
-    discords_path   = 'data/discord_tokens.txt'
     proxies_path    = 'data/proxy.txt'
     refcodes_path   = 'data/refcodes.txt'
     twitters_path   = 'data/twitter_tokens.txt'
@@ -18,7 +17,6 @@ class DataLoader:
         self.lock = lock
         self.__db = MainDB()
 
-        self.discord_tokens = FileManager.read_file(self.discords_path)
         self.proxies        = FileManager.read_file(self.proxies_path)
         self.refcodes       = FileManager.read_file(self.refcodes_path)
         self.twitter_tokens = FileManager.read_file(self.twitters_path)
@@ -26,39 +24,6 @@ class DataLoader:
         self.accounts       = self.__db.get_accounts()
         
         self.count_refcode  = 0
-
-    async def get_discord(self, thread: int, proxy: str | None = None) -> str:
-        while True:
-            async with self.lock:
-                if self.discord_tokens:
-                    token: str = self.discord_tokens.pop(0)
-                else:
-                    return 'nodiscord'
-
-            if self.__db.get_account_by_key('discord_token', token):
-                logger.info(f'Поток {thread} | Уже присутсвует в БД! Пропущен - <u><i>DiscordToken: <r>{token}</r></i></u>')
-                async with self.lock:
-                    FileManager.delete_str_file(self.discords_path, token)
-                continue
-
-            status, message = await Checker.discord_auth(
-                auth_token=token,
-                proxy=proxy
-            )
-
-            if status == False:
-                logger.error(f'Поток {thread} | Невалидный <r>DiscordToken</r>: {message}')
-                async with self.lock:
-                    FileManager.delete_str_file(self.discords_path, token)
-                continue
-            elif status is None:
-                logger.warning(f'Поток {thread} | Ошибка <y>DiscordToken</y>: {message}')
-                continue #TODO Возможен бесконечный цикл при плохих прокси
-            else:
-                logger.info(f'Поток {thread} | Валидный <g>DiscordToken</g>')
-                async with self.lock:
-                    FileManager.delete_str_file(self.discords_path, token)
-                return token
 
     async def get_proxy(self, thread: int, timeout: int | float = 5) -> str:
         while True:

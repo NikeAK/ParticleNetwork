@@ -175,14 +175,6 @@ class TaskManager:
                 else:
                     logger.info(f'Поток {thread} | К аккаунту уже привязан <c>Twitter</c>!')
 
-                if login_data['discordId'] is None:
-                    discord = await self.__dl.get_discord(thread, proxy)
-                    if discord == 'nodiscord':return discord
-                    account.discord_token = discord
-                    await particle.bind_discord(discord) 
-                else:
-                    logger.info(f'Поток {thread} | К аккаунту уже привязан <c>Discord</c>!')
-
                 self.__db.add_account(account)
                 logger.info(f'Поток {thread} | Добавил аккаунт в БД - <u><i>PrivateKey: <g>{wallet[:5]}***{wallet[61:]}</g></i></u>')
     

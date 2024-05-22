@@ -3,8 +3,6 @@ import hashlib
 import json
 import uuid
 import twitter
-import discord
-import re
 import random
 
 from datetime import datetime, timezone
@@ -232,56 +230,6 @@ class ParticleNetwork:
         else:
             return False
     
-    async def bind_discord(self, auth_token: str) -> dict:
-        for attempt in range(1, 4):
-            client = discord.Client()
-            await client.login(auth_token)
-
-            application_id = 1229361725870964818
-            bind_params = {
-                'scopes': ['identify email'],
-                'response_type': 'code',
-                'redirect_uri': 'https://pioneer.particle.network/signup',
-                'state': 'discord-' + str(uuid.uuid4())
-            }
-            auth_url = await client.create_authorization(application_id, **bind_params)
-            discord_code = re.search(r'code=([^&]+)', auth_url).group(1)
-
-            captcha_code = await Captcha(self.thread, self.account.proxy).bind()
-
-            mac_data = {
-                "cfTurnstileResponse": captcha_code,
-                "code": discord_code,
-                "device_id": self.account.device_id,
-                "mac_key": self.mackey,
-                "project_app_uuid": "79df412e-7e9d-4a19-8484-a2c8f3d65a2e",
-                "project_client_key": "cOqbmrQ1YfOuBMo0KKDtd15bG1ENRoxuUa7nNO76",
-                "project_uuid": "91bf10e7-5806-460d-95af-bef2a3122e12",
-                "provider": "discord",
-                "random_str": str(uuid.uuid4()),
-                "sdk_version": "web_1.0.0",
-                "timestamp": ParticleNetwork.get_unix_timestamp()
-            }
-
-            params = self.create_common_params(mac_data)
-
-            payload = {
-                "code": discord_code,
-                "provider": "discord",
-                "cfTurnstileResponse": captcha_code
-            }
-            
-            response = await self.session.post(self.pioneer_api+'/users/bind', params=params, json=payload)
-            answer = response.json()
-
-            if answer.get('discordId'):
-                logger.success(f'Поток {self.thread} | Привязал <c>Discord</c> - <c>DiscordID</c>: <g>{answer['discordId']}</g>')
-                return True
-            else:
-                logger.error(f'Поток {self.thread} | Не удалось привязать <r>Discord</r>: <r>{answer.get('message')}</r> | Попытка <y>{attempt}</y>/<r>3</r>, сплю 5 сек.')
-                await asyncio.sleep(5)
-        else:
-            return False
     
     async def deposit_usdg(self, amount: int | float) -> str:
         logger.info(f'Поток {self.thread} | Инициализирую транзакцию <y>Particle Deposit USDG...</y>')

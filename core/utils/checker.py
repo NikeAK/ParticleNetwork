@@ -1,10 +1,8 @@
 import asyncio
 import warnings
-import discord
 import twitter
 
 from curl_cffi.requests import AsyncSession #переделать
-from discord.errors import LoginFailure, HTTPException
 from twitter.errors import BadToken, BadRequest
 from pydantic import ValidationError
 
@@ -25,18 +23,6 @@ class Checker:
             return False, str(error)
         else:
             return True, answer['ip']
-
-    @staticmethod
-    async def discord_auth(auth_token: str, proxy: str | None = None) -> tuple[bool | None, str]:
-        try:
-            async with discord.Client(proxy=proxy) as client:
-                await client.login(auth_token)
-        except LoginFailure as error:
-            return False, str(error)
-        except Exception as error:
-            return None, str(error)
-        else:
-            return True, auth_token
 
     @staticmethod
     async def twitter_auth(auth_token: str, proxy: str | None = None) -> tuple[bool | None, str]:

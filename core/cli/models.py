@@ -72,7 +72,6 @@ class CLInterfaceModels:
                 'private_key         - Приватный ключ',
 
                 'twitter_token       - Твиттер auth_token',
-                'discord_token       - Дискорд auth_token',
                 'proxy               - Прокси',
 
                 'device_id           - Уникальный идентификатор аккаунта',
