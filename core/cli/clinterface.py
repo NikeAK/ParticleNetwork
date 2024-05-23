@@ -66,7 +66,7 @@ class CLInterface:
     def _selected_launch_(self):
         CLInterface.__show_logo__(CLInterfaceModels.launch_logo)
 
-        storage = CLInterface.__promt__(CLInterfaceModels.launch_storage_menu)
+        storage, filter_ = CLInterface.__promt__(CLInterfaceModels.launch_storage_menu), None
         CLInterface.clear_console()
 
         if storage == 'Launch DataBase':
@@ -115,7 +115,7 @@ class CLInterface:
         CLInterface.clear_console()
         CLInterface.__show_logo__(CLInterfaceModels.launch_logo)
 
-        return self.__core.task_launch(threads, storage)
+        return self.__core.task_launch(threads, storage, filter_=filter_)
     
     @Helper.proceed
     def _selected_generate_wallets_(self):

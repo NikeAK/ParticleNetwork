@@ -34,9 +34,9 @@ class Core:
         self.__cli.show_main_menu()
     
     @staticmethod
-    async def setup_task(threads: int, task_type: str, *args):
+    async def setup_task(threads: int, task_type: str, *args, **kwargs):
 
-        task_manager = TaskManager()
+        task_manager = TaskManager(filter_ = kwargs.get('filter_'))
 
         tasks = []
         for thread in range(1, threads+1):
@@ -65,14 +65,14 @@ class Core:
                 break
                 
     @Decor.asyncstart
-    def task_launch(self, threads: int, *args):
-        return Core.setup_task(threads, 'launch', *args)
+    def task_launch(self, threads: int, *args, **kwargs):
+        return Core.setup_task(threads, 'launch', *args, **kwargs)
     
     @Decor.asyncstart
-    def task_generate(self, threads: int, *args):
-        return Core.setup_task(threads, 'generate_wallets', *args)
+    def task_generate(self, threads: int, *args, **kwargs):
+        return Core.setup_task(threads, 'generate_wallets', *args, **kwargs)
 
     @Decor.asyncstart
-    def task_export(self, threads: int, *args):
-        return Core.setup_task(threads, 'export_info', *args)
+    def task_export(self, threads: int, *args, **kwargs):
+        return Core.setup_task(threads, 'export_info', *args, **kwargs)
 

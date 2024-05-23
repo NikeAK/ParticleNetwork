@@ -534,19 +534,28 @@ class ParticleNetwork:
         payload['params'][0][1].update(userOps[1]['userOp'])
         payload['params'][0][1]['signature'] = '0x' + second_signature
         
-        response = await self.session.post(self.universal_api, json=payload, custom_headers=self.session.DEFAULT_HEADERS)
-        answer = response.json()
+        for attempt in range(1, 4):
+            try:
+                response = await self.session.post(self.universal_api, json=payload, custom_headers=self.session.DEFAULT_HEADERS)
+                answer = response.json()
 
-        _id = answer['result']['_id']
+                _id = answer['result']['_id']
+            except KeyError:
+                logger.error(f'Поток {self.thread} | Не удалось получить номер транзакции <r>Check-IN</r> | <r>Response: {answer}</r> | Попытка <y>{attempt}</y>/<r>3</r>, cплю 10 сек.')
+                await asyncio.sleep(10)
+            else:
+                break
+        else:
+            return None
+
+        payload = {
+            "jsonrpc": "2.0",
+            "chainId": 11155420,
+            "method": "universal_getCrossChainUserOperation",
+            "params": [_id]
+        }
 
         while True:
-            payload = {
-                "jsonrpc": "2.0",
-                "chainId": 11155420,
-                "method": "universal_getCrossChainUserOperation",
-                "params": [_id]
-            }
-
             response = await self.session.post(self.universal_api, json=payload, custom_headers=self.session.DEFAULT_HEADERS)
             answer = response.json()
 
@@ -780,19 +789,28 @@ class ParticleNetwork:
         payload['params'][0][1].update(userOps[1]['userOp'])
         payload['params'][0][1]['signature'] = '0x' + second_signature
 
-        response = await self.session.post(self.universal_api, json=payload, custom_headers=self.session.DEFAULT_HEADERS)
-        answer = response.json()
+        for attempt in range(1, 4):
+            try:
+                response = await self.session.post(self.universal_api, json=payload, custom_headers=self.session.DEFAULT_HEADERS)
+                answer = response.json()
 
-        _id = answer['result']['_id']
+                _id = answer['result']['_id']
+            except KeyError:
+                logger.error(f'Поток {self.thread} | Не удалось получить номер транзакции <r>Particle Withdraw</r> | <r>Response: {answer}</r> | Попытка <y>{attempt}</y>/<r>3</r>, сплю 10 сек.')
+                await asyncio.sleep(10)
+            else:
+                break
+        else:
+            return None
+        
+        payload = {
+            "jsonrpc": "2.0",
+            "chainId": self.network.chain_id,
+            "method": "universal_getCrossChainUserOperation",
+            "params": [_id]
+        }
 
         while True:
-            payload = {
-                "jsonrpc": "2.0",
-                "chainId": self.network.chain_id,
-                "method": "universal_getCrossChainUserOperation",
-                "params": [_id]
-            }
-
             response = await self.session.post(self.universal_api, json=payload, custom_headers=self.session.DEFAULT_HEADERS)
             answer = response.json()
 

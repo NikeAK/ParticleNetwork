@@ -19,12 +19,20 @@ from data.service import NETWORK_BYKEY
 
 
 class TaskManager:
-    def __init__(self) -> None:
+    def __init__(self, filter_: list | None) -> None:
         self.lock = asyncio.Lock()
         self.__db = MainDB()
         self.__dl = DataLoader(lock=self.lock)
         self.__network = NETWORK_BYKEY[MAIN_NETWORK]
-    
+        self._apply_filter(filter_)
+            
+    def _apply_filter(self, filter_: list | None) -> None:
+        if filter_:
+            self.__dl.accounts = self.__db.get_accounts_filtered(
+                checkin=('Check-in failed' in filter_),
+                todaytx=('No 100 transactions' in filter_)
+            )
+
     async def launch(self, thread: int, storage: str) -> None:
         while True:
             if storage == 'Launch DataBase':
