@@ -48,7 +48,6 @@ class DataLoader:
                     'https://pioneer-api.particle.network/',
                     # 'https://universal-api.particle.network/',
                     # 'https://rpc.particle.network/evm-chain',
-                    # 'https://discord.com/api/'
                 ],
                 timeout=timeout
             )

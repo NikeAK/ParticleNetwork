@@ -150,7 +150,6 @@ class TaskManager:
                     address=ethAccount.from_key(wallet).address,
                     private_key=wallet,
                     twitter_token='This account has already been registered',
-                    discord_token='This account has already been registered',
                     proxy=proxy,
                     device_id=str(uuid.uuid4()),
                     refcode='This account has already been registered'

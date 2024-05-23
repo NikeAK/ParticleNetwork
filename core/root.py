@@ -52,7 +52,7 @@ class Core:
         await asyncio.gather(*pending)
 
         messages = {
-            'nodiscord': "cписок дискорд-токенов закончился!",
+            'notwitter': "cписок твиттер-токенов закончился!",
             'noproxy': "cписок прокси закончился!",
             'nowallet': "cписок приватных ключей закончился!",
             'noaccount': "cписок аккаунтов БД отбработан :)",
