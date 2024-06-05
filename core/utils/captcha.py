@@ -1,4 +1,5 @@
 import asyncio
+import json
 from core.client import BaseAsyncSession
 from core.utils import logger
 from data.config import (
@@ -25,16 +26,27 @@ class CaptchaService:
     async def create_task(self, data_task: dict) -> dict:
         payload = {'clientKey': self.api_key, 'task': data_task}
         response = await self.session.post(self.url_service+'/createTask', json=payload)
-        return response.json()
+        try:
+            return response.json()
+        except json.JSONDecodeError as e:
+            logger.error(f'Поток {self.thread} | Ошибка при декодировании JSON: {e.msg} - {response.content.decode("utf-8")}')
+            return {}
 
     async def get_result_task(self, task_id: int) -> dict:
         payload = {"clientKey": self.api_key, "taskId": task_id}
         for _ in range(100):
             response = await self.session.post(self.url_service+'/getTaskResult', json=payload)
-            answer = response.json()
-            if answer["status"] == "ready":
+            try:
+                answer = response.json()
+            except json.JSONDecodeError as e:
+                logger.error(f'Поток {self.thread} | Ошибка при декодировании JSON: {e.msg} - {response.content.decode("utf-8")}')
+                return {}
+
+            if answer.get("status") == "ready":
                 return answer
+
             await asyncio.sleep(4)
+        return {}
 
     async def resolve(self, data_task: dict) -> dict | None:
         task = await self.create_task(data_task)
@@ -42,7 +54,11 @@ class CaptchaService:
             logger.error(f'Поток {self.thread} | Капча - Не удалось создать задачу: {task}')
             return None
 
-        task_id = task['taskId']
+        task_id = task.get('taskId')
+        if not task_id:
+            logger.error(f'Поток {self.thread} | Капча - Отсутствует taskId в ответе: {task}')
+            return None
+
         logger.info(f'Поток {self.thread} | Капча - Создал задачу | TaskID: {task_id}')
         result = await self.get_result_task(task_id)
         if result.get('errorId'):
@@ -77,4 +93,3 @@ class Captcha:
 
     async def checkin(self) -> str | None:
         return await self.solve_captcha('https://pioneer.particle.network', '0x4AAAAAAAaHm6FnzyhhmePw')
-
