@@ -5,6 +5,10 @@
 
 ![img1](data/demo/demo.png)
 
+The software does not work at the moment, because there is no time to finalize it.
+
+But to rewrite the software or write the software under your technical task from 100$.
+
 ## 💡Функционал  
 | Функционал                                                     | Поддерживается  |
 |----------------------------------------------------------------|:---------------:|
