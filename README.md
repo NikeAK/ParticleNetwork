@@ -1,13 +1,16 @@
 # ParticleNetwork
+
+The software does not work at the moment, because there is no time to finalize it.
+
+But to rewrite the software or write the software under your technical task from 100$.
+
+Write in Telegram @Nukeli
+
 [![Telegram channel](https://img.shields.io/endpoint?url=https://runkit.io/damiankrawczyk/telegram-badge/branches/master?url=https://t.me/oxcode1)](https://t.me/oxcode1)
 
 ✈️[Telegram Channel](https://t.me/oxcode1)
 
 ![img1](data/demo/demo.png)
-
-The software does not work at the moment, because there is no time to finalize it.
-
-But to rewrite the software or write the software under your technical task from 100$.
 
 ## 💡Функционал  
 | Функционал                                                     | Поддерживается  |
